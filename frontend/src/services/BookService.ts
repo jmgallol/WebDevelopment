@@ -7,6 +7,21 @@ export class BookService {
     return useBookStore().books;
   }
 
+  static getBooksByCategory(category?: string): BookInterface[] {
+    const books = this.getBooks();
+
+    if (!category) {
+      return books;
+    }
+
+    return books.filter((book) => book.category === category);
+  }
+
+  static getUniqueBookCategories(): string[] {
+    const categories = this.getBooks().map((book) => book.category);
+    return [...new Set(categories)];
+  }
+
   static getBookById(id: number): BookInterface | undefined {
     return useBookStore().books.find((book) => book.id === id);
   }
@@ -15,5 +30,4 @@ export class BookService {
     const id = useBookStore().books.length + 1;
     useBookStore().books.push({ id, ...book });
   }
-
 }
